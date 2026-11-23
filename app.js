@@ -7,34 +7,31 @@ document.addEventListener("DOMContentLoaded", function () {
   let previousNumber = null;
 
   // ======================
-  // JERSEY NUMBERS (00–99)
+  // HELPERS
   // ======================
-  const dropdown = document.getElementById("jerseyNumber");
-
-  function buildNumbers() {
-    dropdown.innerHTML = `<option value="">Select Number</option>`;
-
-    const zero = document.createElement("option");
-    zero.value = "00";
-    zero.textContent = "00";
-    dropdown.appendChild(zero);
-
-    for (let i = 1; i <= 99; i++) {
+  function fillJerseyNumbers(select) {
+    for (let i = 0; i <= 99; i++) {
       const val = i.toString().padStart(2, "0");
-
       const opt = document.createElement("option");
       opt.value = val;
       opt.textContent = val;
-
-      dropdown.appendChild(opt);
+      select.appendChild(opt);
     }
   }
 
-  buildNumbers();
+  // ======================
+  // MAIN JERSEY NUMBERS (00-99)
+  // ======================
+  const dropdown = document.getElementById("jerseyNumber");
+  dropdown.innerHTML = `<option value="">Select Number</option>`;
+  fillJerseyNumbers(dropdown);
 
-  // 
+  // ======================
   // ADDITIONAL JERSEYS
-  //
+  // ======================
+  // jerseyCount (top of form) only stores the number with the order.
+  // extraToggle + extraCount (Additional Jerseys section) build the boxes.
+  const jerseyCount = document.getElementById("jerseyCount");
   const toggle = document.getElementById("extraToggle");
   const section = document.getElementById("extraSection");
   const count = document.getElementById("extraCount");
@@ -42,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggle.addEventListener("change", () => {
     if (toggle.value === "yes") {
-      section.classList.remove("hidden"); 
+      section.classList.remove("hidden");
       generateExtras();
     } else {
       section.classList.add("hidden");
@@ -52,14 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   count.addEventListener("change", generateExtras);
 
-
   function generateExtras() {
     container.innerHTML = "";
 
-    const num = parseInt(count.value);
+    const num = parseInt(count.value) || 0;
 
     for (let i = 1; i <= num; i++) {
-
       const div = document.createElement("div");
       div.className = "extra-box";
 
@@ -73,8 +68,9 @@ document.addEventListener("DOMContentLoaded", function () {
           <option value="">No Number</option>
         </select>
 
-        <label>Jersey Size</label>
+        <label>Jersey Size (US Size)</label>
         <select class="extraSize">
+          <option>Kid's size</option>
           <option>S</option>
           <option>M</option>
           <option>L</option>
@@ -86,29 +82,34 @@ document.addEventListener("DOMContentLoaded", function () {
         <select class="extraSleeve">
           <option>Half Sleeve</option>
           <option>Full Sleeve</option>
-          <option>Both </option>
+          <option>Both</option>
+        </select>
+
+        <label>Pant Size (US Size)</label>
+        <select class="extraPant">
+          <option value="">Select Size</option>
+          <option>Kid's size</option>
+          <option>XXS</option>
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+        <label>Number of Caps</label>
+        <select class="extraCaps">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
         </select>
       `;
 
       container.appendChild(div);
-
-      // fill numbers
-      const select = div.querySelector(".extraNumber");
-
-      const zero = document.createElement("option");
-      zero.value = "00";
-      zero.textContent = "00";
-      select.appendChild(zero);
-
-      for (let j = 1; j <= 99; j++) {
-        const val = j.toString().padStart(2, "0");
-
-        const opt = document.createElement("option");
-        opt.value = val;
-        opt.textContent = val;
-
-        select.appendChild(opt);
-      }
+      fillJerseyNumbers(div.querySelector(".extraNumber"));
     }
   }
 
@@ -154,9 +155,49 @@ document.addEventListener("DOMContentLoaded", function () {
     const jerseyNumber = document.getElementById("jerseyNumber").value;
     const jerseySize = document.getElementById("jerseySize").value;
     const sleeve = document.getElementById("sleeve").value;
+    const pantSize = document.getElementById("pantSize").value;
+    const capCount = parseInt(document.getElementById("capCount").value) || 0;
+    const additionalJerseyCount = parseInt(jerseyCount.value) || 0;
 
-    if (!firstName || !lastName || !phone || !jerseyName || !jerseyNumber) {
+    if (!firstName || !lastName || !phone || !jerseyName || !jerseyNumber || !pantSize) {
       alert("Please fill all required fields");
+      isSubmitting = false;
+      return;
+    }
+
+    // ======================
+    // COLLECT EXTRAS
+    // ======================
+    const extraJerseys = [];
+    let extrasValid = true;
+
+    document.querySelectorAll(".extra-box").forEach((box, index) => {
+      const name = box.querySelector(".extraName").value.trim();
+      const number = box.querySelector(".extraNumber").value;
+      const size = box.querySelector(".extraSize").value;
+      const sleeveType = box.querySelector(".extraSleeve").value;
+      const pant = box.querySelector(".extraPant").value;
+      const caps = parseInt(box.querySelector(".extraCaps").value) || 0;
+
+      if (name) {
+        if (!pant) {
+          alert(`Please select a pant size for Additional Jersey ${index + 1}`);
+          extrasValid = false;
+          return;
+        }
+
+        extraJerseys.push({
+          name,
+          number,
+          size,
+          sleeve: sleeveType,
+          pantSize: pant,
+          caps
+        });
+      }
+    });
+
+    if (!extrasValid) {
       isSubmitting = false;
       return;
     }
@@ -195,28 +236,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // ======================
-      // COLLECT EXTRAS (FIXED)
-      // ======================
-      const extraJerseys = [];
-
-      document.querySelectorAll(".extra-box").forEach(box => {
-
-        const name = box.querySelector(".extraName").value.trim();
-        const number = box.querySelector(".extraNumber").value;
-        const size = box.querySelector(".extraSize").value;
-        const sleeveType = box.querySelector(".extraSleeve").value;
-
-        if (name) {
-          extraJerseys.push({
-            name,
-            number,
-            size,
-            sleeve: sleeveType
-          });
-        }
-      });
-
-      // ======================
       // SAVE FULL ORDER
       // ======================
       await db.collection("jerseys").add({
@@ -227,6 +246,9 @@ document.addEventListener("DOMContentLoaded", function () {
         jerseyNumber,
         jerseySize,
         sleeve,
+        pantSize,
+        capCount,
+        additionalJerseyCount,
         extras: extraJerseys,
         createdAt: Date.now()
       });
@@ -245,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ======================
-  // EDIT BUTTON FIX
+  // EDIT BUTTON
   // ======================
   editBtn.addEventListener("click", function () {
     form.style.display = "block";
@@ -253,5 +275,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     previousNumber = document.getElementById("jerseyNumber").value;
   });
+
+
+
+// ======================
+// IMAGE LIGHTBOX
+// ======================
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+
+document.querySelectorAll(".img-box img").forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.remove("hidden");
+  });
+});
+
+lightbox.addEventListener("click", () => {
+  lightbox.classList.add("hidden");
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") lightbox.classList.add("hidden");
+});
 
 });
