@@ -29,22 +29,26 @@
 <option value="">Select Number</option>
 </select>
 
+<label>Number of Additional Jerseys</label>
+<select id="jerseyCount">
+<option value="">Select Number</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
+
 <label>Jersey Size(US Size)</label>
 <select id="jerseySize" required>
 <option value="">Select Size</option>
+<option>Kid's size</option>
 <option>S</option>
 <option>M</option>
 <option>L</option>
 <option>XL</option>
 <option>XXL</option>
-</select>
-
-<label>Sleeve Type</label>
-<select id="sleeve" required>
-<option value="">Select Sleeve</option>
-<option>Half Sleeve</option>
-<option>Full Sleeve</option>
-<option>Both</option>
 </select>
 
 <!-- SIZE GUIDE -->
@@ -54,6 +58,45 @@
   <p>Size Chart</p>
   <img src="Size chart.png" alt="Size Chart">
 </div>
+
+<label>Sleeve Type</label>
+<select id="sleeve" required>
+<option value="">Select Sleeve</option>
+<option>Half Sleeve</option>
+<option>Full Sleeve</option>
+<option>Both</option>
+</select>
+
+<label>Pant Size(US Size)</label>
+<select id="pantSize" required>
+<option value="">Select Size</option>
+<option>Kid's size</option>
+<option>XXS</option>
+<option>XS</option>
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+</select>
+
+<!-- SIZE GUIDE -->
+<h2>Size Guide(Pants)</h2>
+
+<div class="img-box">
+  <p>Size Chart</p>
+  <img src="pants.jpg" alt="Size Chart">
+</div>
+
+<label>Number of Caps</label>
+<select id="capCount">
+<option value="">Select Number</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+
 
 <!-- ADDITIONAL JERSEYS -->
 <h2>Additional Jerseys</h2>
@@ -91,6 +134,16 @@
 </div>
 
 </div>
+
+<div id="lightbox" class="lightbox hidden">
+  <img id="lightboxImg" alt="Enlarged size chart">
+</div>
+
+<div class = "logo">
+    <img src="logo2.png" alt="Logo image">
+</div>
+
+
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
