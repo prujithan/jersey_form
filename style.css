@@ -75,7 +75,53 @@ button:hover {
   object-fit: contain;
 }
 
-.thank-you {
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  z-index: 1000;
+  cursor: zoom-out;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.lightbox.hidden {
+  display: none;
+}
+
+.img-pants {
+  text-align: center;
+  background: #0f172a;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
+.img-pants img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.logo {
+  position: absolute;
+  top: 40px;    /* distance from the top */
+  left: 395px;   /* distance from the left */
+}
+
+.logo img {
+  width: 80px;
+  height: auto;
+}
+.thank- you {
   text-align: center;
   padding: 30px;
   margin-top: 20px;
