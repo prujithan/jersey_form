@@ -112,19 +112,26 @@ button:hover {
 }
 
 .logo {
-  position: absolute;
-  top: 40px;    /* distance from the top */
-  left: 395px;   /* distance from the left */
+  text-align: center;
 }
 
 .logo img {
-  width: 80px;
+  width: clamp(100px, 25vw, 250px);
   height: auto;
 }
+
 .thank- you {
   text-align: center;
   padding: 30px;
   margin-top: 20px;
   background: #0f172a;
   border-radius: 12px;
+}
+
+.footer {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  margin-top: 20px;
+  padding: 10px;
 }
