@@ -4,8 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // STATE
   // ======================
   let isSubmitting = false;
-  let previousNumber = null;
-
+  let previousNumber = null
   // ======================
   // HELPERS
   // ======================
@@ -253,6 +252,8 @@ document.addEventListener("DOMContentLoaded", function () {
         createdAt: Date.now()
       });
 
+      document.getElementById("logoImg").src = "thank4.png";
+
       form.style.display = "none";
       thankYouBox.classList.remove("hidden");
 
@@ -270,6 +271,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // EDIT BUTTON
   // ======================
   editBtn.addEventListener("click", function () {
+    document.getElementById("logoImg").src = "logo2.png";
+
     form.style.display = "block";
     thankYouBox.classList.add("hidden");
 
